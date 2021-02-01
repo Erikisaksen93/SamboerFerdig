@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Test Suite</title>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.14.0.css">
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-2.14.0.js"></script>
+    <script src="model.js"></script>
+    <script src="controller.js"></script>
+    
+    <script>
+
+        function mainScreenView() {}
+
+        function storeView() {}
+
+        // sjekker om det er mulig å kjøpe i shop når man ikke har nok poeng
+        // ikke gyldig verdi
+        QUnit.test('Person one attempts to buy items with not enough points', function(assert) {
+            personOneBuyStoreItem(0);
+            var midlertidig = model.points[0].points;
+            let actual = midlertidig;
+            let expected = 67;
+            assert.deepEqual(actual, expected)
+        });
+        
+        // teste for å se om det er mulig å kjøpe hvis man har nok poeng for person 1
+        // gyldig verdi
+        QUnit.test('Person one buying items with enough points', function(assert) {
+            personOneBuyStoreItem(2)
+            let actual = model.points[0].points;
+            let expected = 22;
+            assert.equal(actual, expected)
+        });
+
+        // teste for å se om det er mulig å kjøpe hvis man har nok poeng for person 2
+        // gyldig verdi
+        QUnit.test('Person two buying items with enough points', function(assert) {
+            personTwoBuyStoreItem(5)
+            let actual = model.points[1].points;
+            let expected = 879;
+            assert.deepEqual(actual, expected)
+        });
+
+        // sjekke om det er mulig å legge til i shop når "prisen" er mindre enn 1.
+        // ikke gyldig verdi
+        QUnit.test('Add item to store that costs less than 1 point', function(assert) {
+            model.addToStore.allowBoth = true;
+            model.addToStore.allowOne = false;
+            model.addToStore.allowTwo = false;
+            model.addToStore.price = -10;
+            addReward()
+            let actual = model.store.length;
+            let expected = 6;
+            assert.equal(actual, expected)
+        });
+
+
+        
+
+
+
+        </script>
+
+</body>
+</html>
